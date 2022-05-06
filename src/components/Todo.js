@@ -1,17 +1,30 @@
 import React from 'react';
 
-const Todo = ({text, todo, todos, setTodos}) => {
+const Todo = ({ text, todo, todos, setTodos }) => {
     //Events
     const deleteHandler = () => {
         // Filter goes through all the list items 
         setTodos(todos.filter((el) => el.id !== todo.id));
     };
 
+    const completeHandler = () => {
+        setTodos(todos.map(item => {
+            if(item.id === todo.id) {
+                return {
+                    ...item, completed: !item.completed
+                }
+            }
+            return item;
+        }))
+    }
+
     return(
-        <div class="todo">
-            <li name="todo-item">{text}</li>
-            <button class="complete-btn"><i class="fas fa-check"></i></button>
-            <button onClick={deleteHandler} class="trash-btn"><i class="fas fa-trash"></i></button>
+        <div className="todo">
+            {/* Changing the CSS based on properties (If complete is clicked or not) */}
+            {/* Use className for react since className is a reserved word in JS */}
+            <li className={`todo-item ${todo.completed ? "completed" : ""}`}>{text}</li>
+            <button onClick={completeHandler} className="complete-btn"><i className="fas fa-check"></i></button>
+            <button onClick={deleteHandler} className="trash-btn"><i className="fas fa-trash"></i></button>
         </div>
     );
 }
